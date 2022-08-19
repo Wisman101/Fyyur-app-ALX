@@ -93,9 +93,9 @@ def show_venue(venue_id):
     # TODO: replace with real venue data from the venues table, using venue_id
     data = Venue.query.get(venue_id)
     data.genres = list(data.genres[1:-1].split(","))
-    data.past_shows = Show.query.filter(Show.start_time < datetime.now(), Show.venue_id == venue_id)
+    data.past_shows = db.session.query(Show).join(Venue).filter(Show.start_time < datetime.now(), Show.venue_id == venue_id)
     data.past_shows_count = data.past_shows.count()
-    data.upcoming_shows = Show.query.filter(Show.start_time >= datetime.now(), Show.venue_id == venue_id)
+    data.upcoming_shows = db.session.query(Show).join(Venue).filter(Show.start_time >= datetime.now(), Show.venue_id == venue_id)
     data.upcoming_shows_count = data.upcoming_shows.count()
     data1 = {
         "id": 1,
@@ -284,9 +284,9 @@ def show_artist(artist_id):
     # TODO: replace with real artist data from the artist table, using artist_id
     data = Artist.query.get(artist_id)
     data.genres = list(data.genres[1:-1].split(","))
-    data.past_shows = Show.query.filter(Show.start_time < datetime.now(), Show.artist_id == artist_id)
+    data.past_shows = db.session.query(Show).join(Artist).filter(Show.start_time < datetime.now(), Show.artist_id == artist_id)
     data.past_shows_count = data.past_shows.count()
-    data.upcoming_shows = Show.query.filter(Show.start_time >= datetime.now(), Show.artist_id == artist_id)
+    data.upcoming_shows = db.session.query(Show).join(Artist).filter(Show.start_time >= datetime.now(), Show.artist_id == artist_id)
     data.upcoming_shows_count = data.upcoming_shows.count()
     data1 = {
         "id": 4,
